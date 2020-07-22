@@ -16,14 +16,13 @@ var questions = [
       answer: "all of the above"
   },
   {
-      question: "What is the JavaScript Element uthat represents either TRUE or FALSE values?",
+      question: "What is the JavaScript Element that represents either TRUE or FALSE values?",
       choices: ["string", "boolean", "condition"],
       answer: "quotes"
   },
 
 
 ];
-// Declared variables
 var score = 0;
 var questionIndex = 0;
 
@@ -58,49 +57,47 @@ timer.addEventListener("click", function () {
   render(questionIndex);
 });
 
-// Renders questions and choices to page: 
 function render(questionIndex) {
   questionsDiv.innerHTML = "";
   ulCreate.innerHTML = "";
-  for (var i = 0; i < questions.length; i++) {
+  for (var i = 0; i < questions.length -1; i++) {
       var userQuestion = questions[questionIndex].question;
       var userChoices = questions[questionIndex].choices;
       questionsDiv.textContent = userQuestion;
   }
-  // New for each for question choices
+
   userChoices.forEach(function (newItem) {
       var listItem = document.createElement("li");
       listItem.textContent = newItem;
       questionsDiv.appendChild(ulCreate);
       ulCreate.appendChild(listItem);
-      listItem.addEventListener("click", (compare));
+      listItem.addEventListener("click", (checkAnswer));
   })
 }
-// Event to compare choices with answer
-function compare(event) {
+
+//Check Answer
+function checkAnswer(event) {
   var element = event.target;
 
   if (element.matches("li")) {
 
       var createDiv = document.createElement("div");
       createDiv.setAttribute("id", "createDiv");
-      // Correct condition 
+    
       if (element.textContent == questions[questionIndex].answer) {
           score++;
           createDiv.innerHTML =("<img width= 50px src=/images/correct.png>")
          
       } else {
-          // Will deduct -5 seconds off secondsLeft for wrong answers
           secondsLeft = secondsLeft - wrongAnswer;
           createDiv.innerHTML =("<img width= 50px src=/images/wrong.png>");
       }
 
   }
-  // Question Index determines number question user is on
+//Move to next Question
   questionIndex++;
 
   if (questionIndex >= questions.length) {
-      // All done will append last page with user stats
       finished();
       createDiv.textContent = "End of quiz!" + " " + "You got  " + score + "/" + questions.length + " Correct!";
   } else {
@@ -109,15 +106,15 @@ function compare(event) {
   questionsDiv.appendChild(createDiv);
 
 }
-// All done will append last page
+//Finished quiz
 function finished() {
   questionsDiv.innerHTML = "";
   currentTime.innerHTML = "";
 
   // Heading:
   var createH1 = document.createElement("h1");
-  createH1.setAttribute("id", "createH1");
-  createH1.textContent = "All Done!"
+
+
 
   questionsDiv.appendChild(createH1);
 
@@ -129,10 +126,10 @@ function finished() {
 
   // Calculates time remaining and replaces it with score
   if (secondsLeft >= 0) {
-      var timeRemaining = secondsLeft;
+     
       var createP2 = document.createElement("p");
       clearInterval(holdInterval);
-      createP.textContent = "Your final score is: " + timeRemaining;
+      createP.textContent = "Your final score is: " + secondsLeft;
 
       questionsDiv.appendChild(createP2);
   }
@@ -152,40 +149,10 @@ function finished() {
 
   questionsDiv.appendChild(createInput);
 
-  // submit
-  var createSubmit = document.createElement("button");
-  createSubmit.setAttribute("type", "submit");
-  createSubmit.setAttribute("id", "Submit");
-  createSubmit.textContent = "End Quiz";
-
-  questionsDiv.appendChild(createSubmit);
-
-  // Event listener to capture initials and local storage for initials and score
   createSubmit.addEventListener("click", function () {
-      var initials = createInput.value;
+    var initials = createInput.value;
 
-      if (initials === null) {
+    
+});
 
-          console.log("No value entered!");
-
-      } else {
-          var finalScore = {
-              initials: initials,
-              score: timeRemaining
-          }
-          console.log(finalScore);
-          var allScores = localStorage.getItem("allScores");
-          if (allScores === null) {
-              allScores = [];
-          } else {
-              allScores = JSON.parse(allScores);
-          }
-          allScores.push(finalScore);
-          var newScore = JSON.stringify(allScores);
-          localStorage.setItem("allScores", newScore);
-          // Travels to final page
-          window.location.replace("./HighScores.html");
-      }
-  });
-
-}
+};
